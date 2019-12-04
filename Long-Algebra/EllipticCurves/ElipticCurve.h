@@ -52,49 +52,48 @@ BigNumber ElipticCurve::getN() {
 // Returns order of a group
 BigNumber ElipticCurve::getOrderOfGroup()
 {
-	bool orderFound = false;
-	// line 5 initiallized and used 17 line variable in this algorithm
-	// https://en.wikipedia.org/wiki/Counting_points_on_elliptic_curves#Baby-step_giant-step
-	BigNumber L("1");
-	BigNumber one("1");
-	BigNumber currPointOrder("1");
-	Point currPoint("0", "0");
-	BigNumber currX("0");
-	while (!orderFound)
-	{
-		currPoint = getNewPointForOrderFinding(&currX);
-		//L = lcm(L, getPointOrder(currPoint));
-		vector<BigNumber*> dividers = getDividers(L);
-		if (dividers.size() <= 1)
-		{
-			orderFound = true;
-			if (dividers.size() == 1)
-				return *dividers[0];
-			else
-			{
-				cout << endl << "Error while counting group order" << endl;
-				return BigNumber("0");
-			}
-		}
-		currX = currX + one;
-	}
+    bool orderFound = false;
+    // line 5 initiallized and used 17 line variable in this algorithm
+    // https://en.wikipedia.org/wiki/Counting_points_on_elliptic_curves#Baby-step_giant-step
+    BigNumber L("1");
+    BigNumber one("1");
+    BigNumber currPointOrder("1");
+    Point currPoint("0", "0");
+    BigNumber currX("0");
+    while (!orderFound)
+    {
+        currPoint = getNewPointForOrderFinding(&currX);
+        //L = L.lcm(L, getPointOrder(currPoint));
+        vector<BigNumber> dividers = L.factorize_naive().base;
+        if (dividers.size() <= 1)
+        {
+            orderFound = true;
+            if (dividers.size() == 1)
+                return dividers[0];
+            else
+            {
+                cout << endl << "Error while counting group order" << endl;
+                return BigNumber("0");
+            }
+        }
+        currX = currX + one;
+    }
+    return BigNumber("0");
 }
 
-vector<BigNumber*> ElipticCurve::getDividers(BigNumber& lcm)
-{
-	return vector<BigNumber*>();
-}
+
 
 Point ElipticCurve::getNewPointForOrderFinding(BigNumber* currX)
 {
-	BigNumber one("1");
-	while (true)
-	{
-		BigNumber Sqrt("0"); //= sqr(currX*currX*currX+A*currX+B);
-		if (Sqrt != BigNumber("-1"))
-			return Point(*currX, Sqrt);
-		*currX = *currX + one;
-	}
+    BigNumber one("1");
+    while (true)
+    {
+        BigNumber Sqrt((*currX)^BigNumber("3")+A*(*currX)+B);
+        vector<BigNumber> root = Sqrt.sqrt();//= sqr(currX*currX*currX+A*currX+B);
+        if (root.size()!=0)
+            return Point(*currX, root[0]);
+        *currX = *currX + one;
+    }
 }
 
 /**
