@@ -191,8 +191,8 @@ Point ElipticCurve::getPointWithN(Point point) {
  */
 Point ElipticCurve::exponentiation (Point a, BigNumber& k) { //Point A in degree k
 
-    if (!(k >= BigNumber("0", k.getN()))) {
-        throw std::invalid_argument("Degree cannot be 0 or lower");
+    if (!(k >= BigNumber("0"))) {
+        throw std::invalid_argument("Degree cannot be lower then 0");
     }
 
     //k = k % (A point order);
@@ -200,12 +200,12 @@ Point ElipticCurve::exponentiation (Point a, BigNumber& k) { //Point A in degree
 
     Point b = Point::getInfinitePoint();
 
-    while (k != BigNumber("0", k.getN())) {
-        if (k % BigNumber("2",k.getN()) == BigNumber("0", k.getN())) {
-            k = k / BigNumber("2",k.getN());
+    while (k != BigNumber("0")) {
+        if (k % BigNumber("2") == BigNumber("0")) {
+            k = k / BigNumber("2");
             a = addPoints(a,a);
         } else {
-            k = k - BigNumber("1",k.getN());
+            k = k - BigNumber("1");
             b = addPoints(b,a);
         }
     }
