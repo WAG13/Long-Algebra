@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/cygdrive/c/Users/AlexanderTotsky/source/repos/Long-Algebra/1/BigNumber.h
+string
+-
+iostream
+-
+vector
+-
+cmath
+-
+
+/cygdrive/c/Users/AlexanderTotsky/source/repos/Long-Algebra/1/Probabilistic_primality_tests .h
+BigNumber.h
+/cygdrive/c/Users/AlexanderTotsky/source/repos/Long-Algebra/1/BigNumber.h
+
+/cygdrive/c/Users/AlexanderTotsky/source/repos/Long-Algebra/1/Source.cpp
+iostream
+-
+BigNumber.h
+/cygdrive/c/Users/AlexanderTotsky/source/repos/Long-Algebra/1/BigNumber.h
+Probabilistic_primality_tests .h
+/cygdrive/c/Users/AlexanderTotsky/source/repos/Long-Algebra/1/Probabilistic_primality_tests .h
+
