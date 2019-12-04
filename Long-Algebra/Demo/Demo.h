@@ -1,4 +1,5 @@
 #pragma once
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -8,10 +9,17 @@
 #include "../BigNumber/BigNumber.h"
 #include "../EllipticCurves/ElipticCurve.h"
 
+using std::cout;
+using std::cin;
+using std::endl;
+using std::string;
+using std::vector;
+
 class Demo
 {
-public:
+private:
 	string N;
+public:
 	Demo(string n) { N = n; };
 	~Demo() {};
 	void start();
