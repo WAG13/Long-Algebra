@@ -2,7 +2,7 @@
 #define LONGALGEBRA_PROBABILISTIC_PRIMALITY_TESTS_H
 #include "BigNumber.h"
 
-/* *
+/* 
 *  №10
 *  @brief Probabilistic primality Phermat's and Solovay–Strassen's tests.
  *  Returns "true" if the number is prime.
