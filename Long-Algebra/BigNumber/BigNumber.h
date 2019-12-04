@@ -531,7 +531,6 @@ BigNumber BigNumber::simple_division(const BigNumber & b) const
 			temp = temp - b;
 			count++;
 		}
-		cout << count << endl;
 		reschunks.push_back(count);
 	}
 	if (!reschunks.empty()) {
