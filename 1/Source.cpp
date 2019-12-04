@@ -1,13 +1,16 @@
 #include <iostream>
 #include "BigNumber.h"
+#include "Probabilistic_primality_tests .h"
 
 int main()
 {
-	BigNumber n1("15", "23");
+    const int iterations = 10;
+	BigNumber n1("101");
+    BigNumber n2("101");
+    bool first = solovayStrassenAlgorithm(n1, iterations);
+    bool second = solovayStrassenAlgorithm(n2, iterations);
+    cout<< std::boolalpha;
+    cout << first << " " << second;
 	n1.printBigNumber();
-	BigNumber n2("7", "23");
 	n2.printBigNumber();
-	std::cout << std::endl;
-	BigNumber n3 = n1 / n2;
-	n3.printBigNumber();
 }
