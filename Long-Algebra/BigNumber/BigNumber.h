@@ -209,7 +209,12 @@ public:
 	/* #7 */
 
 
-	/* #8 */
+	/*
+	* #8 
+	* @brief Finding all generator of a cyclic group
+	* @author Makarenko Natalia
+	*/
+	vector<BigNumber> get_generator(factorization& prime_factorization);
 
 
 	/* #9 */
@@ -1182,13 +1187,33 @@ vector<BigNumber> BigNumber::sqrt()
 /* #7 */
 
 
-/* #8 */
-
+/*
+* #8
+* @brief Finding all generator of a cyclic group
+* @author Makarenko Natalia
+*/
+inline vector<BigNumber> BigNumber::get_generator(factorization& prime_factorization)
+{
+	vector<BigNumber> res;
+	BigNumber one("1", this->to_string());
+	BigNumber i("0", this->operator+(one).to_string());
+	bool flag = true;
+	for (; !i.operator>(*this) && i.operator!=(*this); i = i.operator+(one))
+	{
+		for (size_t j = 0; j < prime_factorization.base.size(); j++)
+			if (i.operator^(this->operator/(prime_factorization.base[j])).operator%(*this).operator==(one))flag = false;
+		if (flag)res.push_back(i);
+		flag = true;
+	}
+	return res;
+}
 
 /* #9 */
 
 
 /* #10 */
+
+
 
 
 /**
