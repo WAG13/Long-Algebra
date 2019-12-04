@@ -1,1 +1,0 @@
-C:/cygwin64/bin/g++.exe -g  -Wl,--enable-auto-import CMakeFiles/longalgebra.dir/1/Source.cpp.o  -o longalgebra.exe -Wl,--out-implib,liblongalgebra.dll.a -Wl,--major-image-version,0,--minor-image-version,0 

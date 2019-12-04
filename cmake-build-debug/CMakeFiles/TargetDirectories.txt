@@ -1,3 +1,0 @@
-/cygdrive/c/Users/AlexanderTotsky/source/repos/Long-Algebra/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/cygdrive/c/Users/AlexanderTotsky/source/repos/Long-Algebra/cmake-build-debug/CMakeFiles/longalgebra.dir
-/cygdrive/c/Users/AlexanderTotsky/source/repos/Long-Algebra/cmake-build-debug/CMakeFiles/edit_cache.dir
