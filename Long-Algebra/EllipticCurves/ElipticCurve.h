@@ -138,7 +138,7 @@ BigNumber ElipticCurve::getOrderOfGroup()
     while (!orderFound)
     {
         currPoint = getNewPointForOrderFinding(&currX);
-        //L = L.lcm(L, getPointOrder(currPoint));
+        L = L.lcm(L, getPointOrder(currPoint));
         vector<BigNumber> dividers = L.factorize_naive().base;
         if (dividers.size() <= 1)
         {
