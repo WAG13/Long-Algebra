@@ -1,6 +1,7 @@
 #pragma once
 #include "Point.h"
 #include "../BigNumber/BigNumber.h"
+#include "BigLinkedList.h"
 #include <limits>
 
 
@@ -22,6 +23,7 @@ public:
 			throw new std::invalid_argument("Discriminant cannot be equal 0");
 		}
 	}
+	BigNumber getPointOrder(Point init_point);
 	Point getNewPointForOrderFinding(BigNumber* currX);
 	BigNumber getOrderOfGroup();
 	vector<BigNumber*> getDividers(BigNumber& lcm);
@@ -49,52 +51,124 @@ BigNumber ElipticCurve::getN() {
 	return N;
 }
 
+/**
+* 13
+* @determining the point order
+* Dmytro Pashchenko
+*/
+BigNumber ElipticCurve::getPointOrder(Point init_point) {
+	if (init_point.isInfinitePoint()) return BigNumber("1");
+
+	BigNumber degree = N + BigNumber("1");
+	Point q = exponentiation(init_point, degree);
+	BigNumber m("1");
+	// m > root^4(N)
+	while (N >= (m ^ BigNumber("4"))) m = m + BigNumber("1");
+
+	// storing all x-coordinates of (j * P) to list, j = 1...m 
+	BigLinkedList<std::pair<BigNumber, BigNumber>> baby_steps;
+	Point last_value = init_point;
+	for (BigNumber i = BigNumber("1"); m >= i; i = i + BigNumber("1")) {
+		baby_steps.push_back(std::pair<BigNumber, BigNumber>{last_value.getX(), i});
+		last_value = addPoints(last_value, init_point);
+	}
+
+	degree = BigNumber("2") * m;
+	Point giant_step = exponentiation(init_point, degree);
+	Point temp_point = giant_step;
+	BigNumber first_index = -m;
+	Point match_point = exponentiation(giant_step, first_index);
+	bool match = false;
+	BigNumber match_index("0");
+	bool negative = false;
+
+	//comparing points (x-coordinates) by giant steps and baby steps, seek for matching
+	BigNumber i = -m;
+	for (; m >= i; i = i + BigNumber("1")) {
+		match_point = addPoints(q, temp_point);
+		for (BigNumber j = BigNumber("0"); m >= j; j = j + BigNumber("1")) {
+			if (match_point.getX() == baby_steps.get(j).first || match_point.getX() == -baby_steps.get(j).first) {
+				match = true;
+				match_index = j;
+				if (match_point.getX() == -baby_steps.get(j).first) negative = true;
+				break;
+			}
+		}
+		if (match) break;
+		temp_point = addPoints(temp_point, giant_step);
+	}
+
+	//similar points, different degrees -> (degree1 - degree2) * P = 0
+	BigNumber order_candidate = N + BigNumber("1") + BigNumber("2") * m * i;
+	if (negative) order_candidate = order_candidate + match_index;
+	else order_candidate = order_candidate - match_index;
+
+	vector<BigNumber> factors;
+	BigNumber temp("0");
+	bool minimal_order = true;
+
+	//searching for the minimal degree, if M:q and q * P = 0 -> M = q, repeat; otherwise M is the order of P
+	while (true) {
+		factors = order_candidate.factorize_pollard().base;
+		for (BigNumber &div : factors) {
+			if (exponentiation(init_point, div) == Point::getInfinitePoint()) {
+				order_candidate = div;
+				minimal_order = false;
+				break;
+			}
+		}
+		if (minimal_order) break;
+		minimal_order = true;
+	}
+
+	return order_candidate;
+}
+
 // Returns order of a group
 BigNumber ElipticCurve::getOrderOfGroup()
 {
-	bool orderFound = false;
-	// line 5 initiallized and used 17 line variable in this algorithm
-	// https://en.wikipedia.org/wiki/Counting_points_on_elliptic_curves#Baby-step_giant-step
-	BigNumber L("1");
-	BigNumber one("1");
-	BigNumber currPointOrder("1");
-	Point currPoint("0", "0");
-	BigNumber currX("0");
-	while (!orderFound)
-	{
-		currPoint = getNewPointForOrderFinding(&currX);
-		//L = lcm(L, getPointOrder(currPoint));
-		vector<BigNumber*> dividers = getDividers(L);
-		if (dividers.size() <= 1)
-		{
-			orderFound = true;
-			if (dividers.size() == 1)
-				return *dividers[0];
-			else
-			{
-				cout << endl << "Error while counting group order" << endl;
-				return BigNumber("0");
-			}
-		}
-		currX = currX + one;
-	}
+    bool orderFound = false;
+    // line 5 initiallized and used 17 line variable in this algorithm
+    // https://en.wikipedia.org/wiki/Counting_points_on_elliptic_curves#Baby-step_giant-step
+    BigNumber L("1");
+    BigNumber one("1");
+    BigNumber currPointOrder("1");
+    Point currPoint("0", "0");
+    BigNumber currX("0");
+    while (!orderFound)
+    {
+        currPoint = getNewPointForOrderFinding(&currX);
+        //L = L.lcm(L, getPointOrder(currPoint));
+        vector<BigNumber> dividers = L.factorize_naive().base;
+        if (dividers.size() <= 1)
+        {
+            orderFound = true;
+            if (dividers.size() == 1)
+                return dividers[0];
+            else
+            {
+                cout << endl << "Error while counting group order" << endl;
+                return BigNumber("0");
+            }
+        }
+        currX = currX + one;
+    }
+    return BigNumber("0");
 }
 
-vector<BigNumber*> ElipticCurve::getDividers(BigNumber& lcm)
-{
-	return vector<BigNumber*>();
-}
+
 
 Point ElipticCurve::getNewPointForOrderFinding(BigNumber* currX)
 {
-	BigNumber one("1");
-	while (true)
-	{
-		BigNumber Sqrt("0"); //= sqr(currX*currX*currX+A*currX+B);
-		if (Sqrt != BigNumber("-1"))
-			return Point(*currX, Sqrt);
-		*currX = *currX + one;
-	}
+    BigNumber one("1");
+    while (true)
+    {
+        BigNumber Sqrt((*currX)^BigNumber("3")+A*(*currX)+B);
+        vector<BigNumber> root = Sqrt.sqrt();//= sqr(currX*currX*currX+A*currX+B);
+        if (root.size()!=0)
+            return Point(*currX, root[0]);
+        *currX = *currX + one;
+    }
 }
 
 /**

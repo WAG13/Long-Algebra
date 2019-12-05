@@ -1,10 +1,5 @@
 #include "Demo.h"
 
-using std::cout;
-using std::cin;
-using std::string;
-using std::vector;
-
 void Demo::start() {
 	system("CLS");
 	cout << "****************** MENU ******************" << endl;
