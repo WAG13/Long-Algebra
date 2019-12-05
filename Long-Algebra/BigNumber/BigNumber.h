@@ -229,7 +229,13 @@ public:
 
 	/* #9 */
 
-	
+    
+    
+    
+    BigNumber gcd(const BigNumber& a, const BigNumber& b);
+    
+    
+    BigNumber lcm(const BigNumber& a, const BigNumber& b);
 	
 };
 
@@ -1331,4 +1337,19 @@ inline vector<BigNumber> BigNumber::get_generator(factorization& prime_factoriza
 /* #9 */
 
 
+//getting greatest common divisor
+BigNumber BigNumber::gcd(const BigNumber& a, const BigNumber& b)
+{
+    if (b == BigNumber("0"))
+        return a;
+    return gcd(b, a % b);
+      
+}
 
+//getting least common multiple
+ BigNumber BigNumber::lcm(const BigNumber& a, const BigNumber& b)
+{
+    BigNumber c = (a*b);
+    BigNumber d = gcd(a, b);
+    return c/d;
+}
