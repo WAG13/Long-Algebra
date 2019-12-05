@@ -245,6 +245,8 @@ public:
  * #3
  * The initialization of the class that is used in functions that factorize BigNumber and return
  *  the array of dividers and their powers.
+ *
+ * @author Vitaliy Datsiuk
  */
 class factorization {
 public:
@@ -255,6 +257,8 @@ public:
 	 * #3
 	 * This function checks if the number is prime
 	 * @return 0 if the number is compositive and 1 if the number is prime
+	 *
+     * @author Vitaliy Datsiuk
 	 */
 	bool is_prime() {
 		vector<int> one;
@@ -269,6 +273,8 @@ public:
 	/**
 	 * #3
 	 * This functions just prints the factorization data of the structure on the screen
+	 *
+     * @author Vitaliy Datsiuk
 	 */
 	void print() {
 		vector<int> one;
@@ -287,6 +293,8 @@ public:
 	 * #3
 	 * This function updates the current data in structure with new data in the same structure
 	 * @param in the data that should be added for this structure
+	 *
+     * @author Vitaliy Datsiuk
 	 */
 	void add_factorization(factorization in) {
 		bool present = 0;
@@ -802,6 +810,8 @@ BigNumber BigNumber::operator ^ (const BigNumber& pow) const {
  * #3
  * This funtion implements tha naive factorization of the number on the prime dividers
  * @return the structure "factorization" that contains all of the dividers and the proper powers
+ *
+ * @author Vitaliy Datsiuk
  */
 factorization BigNumber::factorize_naive() {
 	vector<BigNumber> _base;
@@ -847,6 +857,8 @@ factorization BigNumber::factorize_naive() {
  * @param a the first number
  * @param b the second number
  * @return the gcd of a and b
+ *
+ * @author Vitaliy Datsiuk
  */
 BigNumber gcd(BigNumber a, BigNumber b) {
 	BigNumber zero = BigNumber("0", a.getN());
@@ -868,6 +880,8 @@ BigNumber gcd(BigNumber a, BigNumber b) {
  *     non-prime.
  * @param _c the const that is used in function formula. For default user it should equals 1.
  * @return one of the dividers
+ *
+ * @author Vitaliy Datsiuk
  */
 BigNumber BigNumber::_factorize_pollard(string _c) {
 
@@ -932,6 +946,8 @@ BigNumber BigNumber::_factorize_pollard(string _c) {
  *      and recursively do it for both divider and the divided/divider. Writes the answer in
  *      factorization structure.
  * @return the factorization structure that contains the factual prime factorization
+ *
+ * @author Vitaliy Datsiuk
  */
 factorization BigNumber::factorize_pollard() {
 	string c = "1";
@@ -1216,8 +1232,12 @@ inline vector<BigNumber> BigNumber::get_generator(factorization& prime_factoriza
 
 
 /**
- * #
- * @brief !!!!!!!!!!!!!!
+ *
+ * @param x
+ * @param a
+ * @param b
+ *
+ * @author Yasia Levchuk
  */
 void BigNumber::set(BigNumber &x, BigNumber &a, BigNumber &b)
 {
@@ -1253,8 +1273,13 @@ void BigNumber::set(BigNumber &x, BigNumber &a, BigNumber &b)
 }
 
 /**
- * #
- * @brief !!!!!!!!!!!!!!
+ * This function finds the logarithm
+ *
+ * @param alpha the basis of the logarithm
+ * @param beta the number to find the power of
+ * @return the logarithm loga (b)
+ *
+ * @author Yasia Levchuk
  */
 BigNumber BigNumber::log_pollard(const BigNumber& alpha, const BigNumber& beta)
 {
