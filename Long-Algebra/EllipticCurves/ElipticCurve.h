@@ -98,7 +98,7 @@ BigNumber ElipticCurve::getPointOrder(Point init_point) {
 		temp_point = addPoints(temp_point, giant_step);
 	}
 
-	//similar points, different degrees -> P * (degree1 - degree2) = 0
+	//similar points, different degrees -> (degree1 - degree2) * P = 0
 	BigNumber order_candidate = N + BigNumber("1") + BigNumber("2") * m * i;
 	if (negative) order_candidate = order_candidate + match_index;
 	else order_candidate = order_candidate - match_index;
