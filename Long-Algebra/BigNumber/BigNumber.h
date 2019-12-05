@@ -76,7 +76,7 @@ public:
 		}
 		N = "0";
 	}
-	BigNumber(const BigNumber& to_copy) : chunks(to_copy.chunks), N(to_copy.N), sign(to_copy.sign), BASE(to_copy.BASE){}
+	BigNumber(const BigNumber& to_copy) : chunks(to_copy.chunks), N(to_copy.N), sign(to_copy.sign), BASE(to_copy.BASE) {}
 	~BigNumber() {}
 
 	/*GETTERS SETTERS*/
@@ -102,7 +102,7 @@ public:
 	vector<int> getChunks() const { return this->chunks; }
 
 	/*OUTPUT*/
-	friend std::ostream & operator << (std::ostream &out, const BigNumber &num) {
+	friend std::ostream& operator << (std::ostream& out, const BigNumber& num) {
 		for (int i = num.chunks.size() - 1; i >= 0; i--) {
 			out << num.chunks[i];
 		}
@@ -130,16 +130,16 @@ public:
 
 	/* #1 */
 	BigNumber operator - () const;
-	void operator = (const BigNumber &num);
-	bool operator == (const BigNumber &num) const;
-	bool operator != (const BigNumber & num) const;
-	bool operator >= (const BigNumber &num) const;
-	bool operator > (const BigNumber &num) const;
-	BigNumber operator % (const BigNumber &num) const;
-	BigNumber operator + (const BigNumber &num) const;
-	BigNumber operator - (const BigNumber &num) const;
-	BigNumber operator * (const BigNumber &num) const;
-	BigNumber operator / (const BigNumber & num) const;
+	void operator = (const BigNumber& num);
+	bool operator == (const BigNumber& num) const;
+	bool operator != (const BigNumber& num) const;
+	bool operator >= (const BigNumber& num) const;
+	bool operator > (const BigNumber& num) const;
+	BigNumber operator % (const BigNumber& num) const;
+	BigNumber operator + (const BigNumber& num) const;
+	BigNumber operator - (const BigNumber& num) const;
+	BigNumber operator * (const BigNumber& num) const;
+	BigNumber operator / (const BigNumber& num) const;
 	BigNumber inverse() const;
 
 	/* #2 */
@@ -185,47 +185,47 @@ public:
 	 * @return 1 if it is and return -1 otherwise
 	 */
 	int Jacobi();
-	
-	 /**
-	 * #4
-	 * @brief Euclidean algorithm
-	 * @param take 2 numbers a, b
-	 * @return vector {d, x, y} such that ax + by = d, where d = GCD(a, b)
-	 */ 
-	 vector<BigNumber> Euclidean_algorithm(BigNumber a, BigNumber b) const;
-
-	 /**
-	 * #4
-	 * @brief square root
-	 * @return square roots if the number has it and N is a prime number
-	 * return empty vector otherwise
-	 */
-	 vector<BigNumber> sqrt(); // 
-	
-
-	/* #5 */
-
-
-	/* #6 */
-
-
-	/* #7 */
-
-
-	/* #8 */
-
-
-	/* #9 */
-
-
-	/* #10 */
-
 
 	/**
-	 * #
-	 * !!!!!!!!!!!!!!!!
-	 */
-	void set(BigNumber &x, BigNumber &a, BigNumber &b);
+	* #4
+	* @brief Euclidean algorithm
+	* @param take 2 numbers a, b
+	* @return vector {d, x, y} such that ax + by = d, where d = GCD(a, b)
+	*/
+	vector<BigNumber> Euclidean_algorithm(BigNumber a, BigNumber b) const;
+
+	/**
+	* #4
+	* @brief square root
+	* @return square roots if the number has it and N is a prime number
+	* return empty vector otherwise
+	*/
+	vector<BigNumber> sqrt(); // 
+
+
+   /* #5 */
+
+
+   /* #6 */
+
+
+   /* #7 */
+
+
+   /* #8 */
+
+
+   /* #9 */
+
+
+   /* #10 */
+
+
+   /**
+	* #
+	* !!!!!!!!!!!!!!!!
+	*/
+	void set(BigNumber& x, BigNumber& a, BigNumber& b);
 
 	/**
 	 * #
@@ -345,7 +345,7 @@ string BigNumber::to_string() const
 }
 
 // operator > 
-bool BigNumber::operator > (const BigNumber &num) const {
+bool BigNumber::operator > (const BigNumber& num) const {
 	if (sign > num.sign) {
 		return true;
 	}
@@ -370,7 +370,7 @@ bool BigNumber::operator > (const BigNumber &num) const {
 }
 
 // operator >=
-bool BigNumber::operator >= (const BigNumber &num) const {
+bool BigNumber::operator >= (const BigNumber& num) const {
 	if (sign > num.sign) {
 		return true;
 	}
@@ -404,13 +404,13 @@ BigNumber BigNumber::operator - () const
 }
 
 // operator =
-void BigNumber::operator = (const BigNumber &num)
+void BigNumber::operator = (const BigNumber& num)
 {
 	this->setBigNumber(num);
 }
 
 // operator ==
-bool BigNumber::operator == (const BigNumber &num) const {
+bool BigNumber::operator == (const BigNumber& num) const {
 	if ((sign != num.sign) || (this->chunks.size() != num.chunks.size())) {
 		return false;
 	}
@@ -421,7 +421,7 @@ bool BigNumber::operator == (const BigNumber &num) const {
 }
 
 // operator !=
-bool BigNumber::operator != (const BigNumber &num) const {
+bool BigNumber::operator != (const BigNumber& num) const {
 	return !(*this == num);
 }
 
@@ -481,7 +481,7 @@ void  BigNumber::modN(string N) {
  * @details for faster division
  * (used in inverse())
  */
-void BigNumber::decrease(const BigNumber & a, BigNumber & b, const BigNumber& a_count_in_a, BigNumber& a_count_in_b) const
+void BigNumber::decrease(const BigNumber& a, BigNumber& b, const BigNumber& a_count_in_a, BigNumber& a_count_in_b) const
 {
 	if (b.getN() == "0") {
 		string N = a.getN();
@@ -513,14 +513,14 @@ void BigNumber::decrease(const BigNumber & a, BigNumber & b, const BigNumber& a_
  * @brief division not under field
  * (used in division /)
  */
-BigNumber BigNumber::simple_division(const BigNumber & b) const
+BigNumber BigNumber::simple_division(const BigNumber& b) const
 {
 	BigNumber res("0");
 	vector<int> reschunks;
 	BigNumber ten("10");
 	BigNumber temp("0");
 	for (int i = chunks.size() - 1; i >= 0;) {
-		while (b > temp && i >= 0) {
+		while (b > temp&& i >= 0) {
 			temp = temp * ten + BigNumber(std::to_string(chunks[i]));
 			i--;
 		}
@@ -543,7 +543,7 @@ BigNumber BigNumber::simple_division(const BigNumber & b) const
  * #1
  * @brief operator +
  */
-BigNumber BigNumber::operator + (const BigNumber &num) const {
+BigNumber BigNumber::operator + (const BigNumber& num) const {
 
 	BigNumber res("0", N);
 	vector<int> reschunks;
@@ -612,7 +612,7 @@ BigNumber BigNumber::operator + (const BigNumber &num) const {
  * #1
  * @brief operator -
  */
-BigNumber BigNumber::operator - (const BigNumber &num) const {
+BigNumber BigNumber::operator - (const BigNumber& num) const {
 
 	BigNumber res("0", N);
 	vector<int> reschunks;
@@ -678,7 +678,7 @@ BigNumber BigNumber::operator - (const BigNumber &num) const {
  * #1
  * @brief operator *
  */
-BigNumber BigNumber::operator * (const BigNumber &num) const {
+BigNumber BigNumber::operator * (const BigNumber& num) const {
 
 	BigNumber res("0", N);
 	vector<int> res_chunks;
@@ -738,10 +738,10 @@ BigNumber BigNumber::inverse() const {
  * @brief operator /
  * if one of module == 0 do standart division
  */
-BigNumber BigNumber::operator / (const BigNumber &num) const {
+BigNumber BigNumber::operator / (const BigNumber& num) const {
 	BigNumber res("0");
-	if (this->getN() != "0"&&num.getN() != "0") {
-		res = (*this)*(num.inverse());
+	if (this->getN() != "0" && num.getN() != "0") {
+		res = (*this) * (num.inverse());
 	}
 	else {
 		res = simple_division(num);
@@ -753,7 +753,7 @@ BigNumber BigNumber::operator / (const BigNumber &num) const {
  * #1
  * @brief operator %
  */
-BigNumber BigNumber::operator % (const BigNumber & num) const
+BigNumber BigNumber::operator % (const BigNumber& num) const
 {
 	BigNumber res = BigNumber("0", N);
 	res.setChunks(chunks);
@@ -769,7 +769,7 @@ BigNumber BigNumber::operator % (const BigNumber & num) const
 BigNumber BigNumber::montgomery_mult(const BigNumber& a, const BigNumber& b, const BigNumber& n1)const {
 	BigNumber x = a * b;
 	BigNumber s = x * n1;
-	
+
 	if (N.size() < s.chunks.size()) {
 		s.chunks.erase(s.chunks.begin() + N.size(), s.chunks.end());
 	}
@@ -782,7 +782,7 @@ BigNumber BigNumber::montgomery_mult(const BigNumber& a, const BigNumber& b, con
 		if (s.chunks.size() == 0)
 			s.chunks.push_back(0);
 	}
-	
+
 
 	BigNumber t = x + s * N;
 	BigNumber u = t;
@@ -795,8 +795,8 @@ BigNumber BigNumber::montgomery_mult(const BigNumber& a, const BigNumber& b, con
 
 BigNumber BigNumber::euclid_alg(const BigNumber& a, const BigNumber& b, BigNumber* x, BigNumber* y)const {
 	// Base Case
-	BigNumber one("1",N);
-	BigNumber zero("0",N);
+	BigNumber one("1", N);
+	BigNumber zero("0", N);
 	if (a == zero)
 	{
 		*x = zero;
@@ -804,7 +804,7 @@ BigNumber BigNumber::euclid_alg(const BigNumber& a, const BigNumber& b, BigNumbe
 		return b;
 	}
 
-	BigNumber x1("0",N), y1("0",N); // To store results of recursive call  
+	BigNumber x1("0", N), y1("0", N); // To store results of recursive call  
 	BigNumber gcd = euclid_alg(b % a, a, &x1, &y1);
 
 	// Update x and y using results of  
@@ -821,85 +821,83 @@ BigNumber BigNumber::euclid_alg(const BigNumber& a, const BigNumber& b, BigNumbe
  * @brief operator ^
  */
 BigNumber BigNumber::operator ^ (const BigNumber& pow) const {
-	//std::string;
-	BigNumber r("0", N);
-	r.chunks.resize(N.size());// = this->chunks.size();
-	r.chunks.push_back(1);
+	char check;
+	if (N.size() && ((check = N[N.size() - 1]) == '1' || check == '3' || check == '7' || check == '9')) {
+		//std::string;
+		BigNumber r("0", N);
+		r.chunks.resize(N.size());// = this->chunks.size();
+		r.chunks.push_back(1);
 
-	BigNumber a = *this;
-	a.setN(pow.N);
+		BigNumber a = *this;
+		a.setN(pow.N);
 
-	//BigNumber n1("0"), rr("0");
-	BigNumber n = N;
-	//r*rr + n*n1 = 1
-	//std::vector<BigNumber> temp = Euclidean_algorithm(n, r);
-	//int k = (r * (rr % n) - 1) / n;
-	BigNumber rr("0", N), n1("0", N);
-	euclid_alg(n, r, &n1, &rr);
-	n1 = (-n1 + N);
-	//if (BigNumber("0") > rr)
-	//	rr = rr + BigNumber(N);
-	//
-	//if (BigNumber("0") > n1)
-	//	n1 = n1 + BigNumber(N);
+		//BigNumber n1("0"), rr("0");
+		BigNumber n = N;
+		//r*rr + n*n1 = 1
+		//std::vector<BigNumber> temp = Euclidean_algorithm(n, r);
+		//int k = (r * (rr % n) - 1) / n;
+		BigNumber rr("0", N), n1("0", N);
+		euclid_alg(n, r, &n1, &rr);
+		n1 = (-n1 + N);
+		//if (BigNumber("0") > rr)
+		//	rr = rr + BigNumber(N);
+		//
+		//if (BigNumber("0") > n1)
+		//	n1 = n1 + BigNumber(N);
 
-	//rr.setN(rr.getN());
-	//n1.setN(n1.getN());
-	//BigNumber a1 = a * r;
-	//BigNumber b1 = b * r;	
+		//rr.setN(rr.getN());
+		//n1.setN(n1.getN());
+		//BigNumber a1 = a * r;
+		//BigNumber b1 = b * r;	
 
-	BigNumber a1("0",N);
-	a1.chunks.reserve(N.size() - 1 + a.chunks.size());
-	for (size_t i = 0, size = N.size() - 1; i < size; ++i)
-		a1.chunks.push_back(0);
-	for (size_t i = 0, size = a.chunks.size(); i < size; ++i)
-		a1.chunks.push_back(a.chunks[i]);
-	
-	a1.setN(N);
+		BigNumber a1("0", N);
+		a1.chunks.reserve(N.size() - 1 + a.chunks.size());
+		for (size_t i = 0, size = N.size() - 1; i < size; ++i)
+			a1.chunks.push_back(0);
+		for (size_t i = 0, size = a.chunks.size(); i < size; ++i)
+			a1.chunks.push_back(a.chunks[i]);
+
+		a1.setN(N);
 
 
-	BigNumber one("1", N);
-	BigNumber i("0");
-	BigNumber c1 = a1;
+		BigNumber one("1", N);
+		BigNumber i("0");
+		BigNumber c1 = a1;
 
-	n1.setN("0");
-	a1.setN("0");
-	c1.setN("0");
-	i.chunks.reserve(N.size());
-	for (BigNumber size = pow - one; size > i; i = i + one) {
-		c1 = montgomery_mult(a1, c1, n1);
+		n1.setN("0");
+		a1.setN("0");
+		c1.setN("0");
+		i.chunks.reserve(N.size());
+		for (BigNumber size = pow - one; size > i; i = i + one) {
+			c1 = montgomery_mult(a1, c1, n1);
+		}
+
+		c1.setN(N);
+		rr.setN(N);
+		BigNumber c = c1 * rr;
+		//std::cout << c;
+		//	std::cout << c;
+		return c;
 	}
+	else {
+		////x^pow % N
+		BigNumber one("1");
+		if (pow == one)
+			return *this;
+		if (pow == BigNumber("0"))
+			return one;
 
-	c1.setN(N);
-	rr.setN(N);
-	BigNumber c = c1 * rr;
-	std::cout << c;
-//	std::cout << c;
-	return c;
+		BigNumber res = *this;
 
-	////x^pow % N
-	//BigNumber one("1");
-	//if (pow == one)
-	//	return *this;
-	//if (pow == BigNumber("0"))
-	//	return one;
+		BigNumber i("1");
 
-	//BigNumber res = *this;
-	//BigNumber two("2");
+		while (i != pow) {
+			res = res * *this;
+			i = i + one;
+		}
 
-	//BigNumber i("1");
-
-	//for (; pow > i*two;) {
-	//	res = res * res;
-	//	i = i * two;
-	//}
-
-	//while (i != pow) {
-	//	res = res * *this;
-	//	i = i + one;
-	//}
-
-	//return res;
+		return res;
+	}
 }
 
 /* #3 */
@@ -987,7 +985,7 @@ BigNumber BigNumber::_factorize_pollard(string _c) {
 	BigNumber one = BigNumber("1", this->to_string());
 	BigNumber two = BigNumber("2", this->to_string());
 
-	if (two > *this) {
+	if (two > * this) {
 		return zero;
 	}
 
@@ -1058,7 +1056,7 @@ factorization BigNumber::factorize_pollard() {
 	BigNumber one = BigNumber("1", N);
 	BigNumber two = BigNumber("2", N);
 	BigNumber divided = *this;
-	if (two > *this) {
+	if (two > * this) {
 		cout << "This number is less than two. *This cout is used to developers. "
 			"Comment it if u dont need it*" << endl;
 		out.base.push_back(one);
@@ -1271,7 +1269,7 @@ vector<BigNumber> BigNumber::sqrt()
 		r = r ^ new_number;
 		for (BigNumber i = BigNumber("1", "0"); s >= i + BigNumber("1", "0"); i = i + BigNumber("1", "0"))
 		{
-			BigNumber d = (r*r*inv) ^ (BigNumber("2") ^ (s - i - BigNumber("1")));
+			BigNumber d = (r * r * inv) ^ (BigNumber("2") ^ (s - i - BigNumber("1")));
 			if (d == BigNumber(N) - BigNumber("1"))
 			{
 				r = r * c;
@@ -1305,7 +1303,7 @@ vector<BigNumber> BigNumber::sqrt()
  * #
  * @brief !!!!!!!!!!!!!!
  */
-void BigNumber::set(BigNumber &x, BigNumber &a, BigNumber &b)
+void BigNumber::set(BigNumber& x, BigNumber& a, BigNumber& b)
 {
 	BigNumber N = BigNumber(this->N);
 	BigNumber zero = BigNumber("0", this->N);
