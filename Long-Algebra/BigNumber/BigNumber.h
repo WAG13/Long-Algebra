@@ -140,6 +140,8 @@ public:
 	BigNumber operator * (const BigNumber &num) const;
 	BigNumber operator / (const BigNumber & num) const;
 	BigNumber inverse() const;
+	void decrease(const BigNumber& a, BigNumber& b, const BigNumber& a_count_in_a, BigNumber& a_count_in_b) const;
+	BigNumber simple_division(const BigNumber& b) const;
 
 	/* #2 */
 	BigNumber operator ^ (const BigNumber& num) const;
@@ -171,9 +173,7 @@ public:
 	 */
 	factorization factorize_pollard();
 
-	BigNumber log_pollard(const BigNumber& alpha, const BigNumber& beta);
-
-
+	
 	/* #4 */
 
 	/**
@@ -204,10 +204,20 @@ public:
 
 
 	/* #6 */
-
+	 void set(BigNumber &x, BigNumber &a, BigNumber &b);
+	 BigNumber log_pollard(const BigNumber& alpha, const BigNumber& beta);
 
 	/* #7 */
 
+	/**
+	 * #7
+	 * @brief Determining the order of a group element
+	 * @return order of a multiplicative group element
+	 * return 0 otherwise
+	 */
+	BigNumber elementOrder(BigNumber A, BigNumber S);
+
+	/* #8 */
 
 	/*
 	* #8 
@@ -219,26 +229,8 @@ public:
 
 	/* #9 */
 
-
-	/* #10 */
-
-
-	/**
-	 * #
-	 * !!!!!!!!!!!!!!!!
-	 */
-	void set(BigNumber &x, BigNumber &a, BigNumber &b);
-
-	/**
-	 * #
-	 * !!!!!!!!!!!!!!!!
-	 */
-	void decrease(const BigNumber& a, BigNumber& b, const BigNumber& a_count_in_a, BigNumber& a_count_in_b) const;
-	/**
-	 * #
-	 * !!!!!!!!!!!!!!!!
-	 */
-	BigNumber simple_division(const BigNumber& b) const;
+	
+	
 };
 
 /**
@@ -717,9 +709,7 @@ BigNumber BigNumber::inverse() const {
 	BigNumber one("1", N);
 	BigNumber zero("0", N);
 	BigNumber a_1("1", N); //a count in a
-	//BigNumber a_2("0", N);//b count in a
 	BigNumber b_1("0", N); //a count in b
-	//BigNumber b_2("1", N);//b count in b
 	BigNumber x("0", N);//result
 	while (!(a == one) && !(b == one)) {
 		if ((a == zero) || (b == zero)) {
@@ -1196,42 +1186,11 @@ vector<BigNumber> BigNumber::sqrt()
 /* #5 */
 
 
+
 /* #6 */
 
-
-/* #7 */
-
-
-/*
-* #8
-* @brief Finding all generator of a cyclic group
-* @author Makarenko Natalia
-*/
-inline vector<BigNumber> BigNumber::get_generator(factorization& prime_factorization)
-{
-	vector<BigNumber> res;
-	BigNumber one("1", this->to_string());
-	BigNumber i("0", this->operator+(one).to_string());
-	bool flag = true;
-	for (; !i.operator>(*this) && i.operator!=(*this); i = i.operator+(one))
-	{
-		for (size_t j = 0; j < prime_factorization.base.size(); j++)
-			if (i.operator^(this->operator/(prime_factorization.base[j])).operator%(*this).operator==(one))flag = false;
-		if (flag)res.push_back(i);
-		flag = true;
-	}
-	return res;
-}
-
-/* #9 */
-
-
-/* #10 */
-
-
-
-
 /**
+ * #6
  *
  * @param x
  * @param a
@@ -1273,6 +1232,7 @@ void BigNumber::set(BigNumber &x, BigNumber &a, BigNumber &b)
 }
 
 /**
+ * #6
  * This function finds the logarithm
  *
  * @param alpha the basis of the logarithm
@@ -1310,3 +1270,65 @@ BigNumber BigNumber::log_pollard(const BigNumber& alpha, const BigNumber& beta)
 	res = res * invers_r;
 	return res;
 }
+
+
+/* #7 */
+
+/**
+* #7
+* @brief Determining the order of a group element
+* @return order of a multiplicative group element
+* return 0 otherwise
+*/
+
+BigNumber BigNumber::elementOrder(BigNumber A, BigNumber S)
+{
+	BigNumber one("1", A.getN());
+	BigNumber zero("0", A.getN());
+
+	if (gcd(A, S) != one)
+		return zero;
+
+	BigNumber result("1", A.getN());
+
+	BigNumber K("1", A.getN());
+	while (S > K)
+	{
+		result = (result * A) % S;
+
+		if (result == K)
+			return K;
+
+		K + one;
+	}
+
+	return zero;
+}
+
+/* #8 */
+
+/*
+* #8
+* @brief Finding all generator of a cyclic group
+* @author Makarenko Natalia
+*/
+inline vector<BigNumber> BigNumber::get_generator(factorization& prime_factorization)
+{
+	vector<BigNumber> res;
+	BigNumber one("1", this->to_string());
+	BigNumber i("0", this->operator+(one).to_string());
+	bool flag = true;
+	for (; !i.operator>(*this) && i.operator!=(*this); i = i.operator+(one))
+	{
+		for (size_t j = 0; j < prime_factorization.base.size(); j++)
+			if (i.operator^(this->operator/(prime_factorization.base[j])).operator%(*this).operator==(one))flag = false;
+		if (flag)res.push_back(i);
+		flag = true;
+	}
+	return res;
+}
+
+/* #9 */
+
+
+
