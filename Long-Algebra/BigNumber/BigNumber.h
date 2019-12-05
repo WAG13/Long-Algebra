@@ -226,10 +226,11 @@ public:
 	*/
 	vector<BigNumber> get_generator(factorization& prime_factorization);
 
-
 	/* #9 */
 
-	
+	BigNumber euler(BigNumber n);
+	BigNumber carmichael(BigNumber n);
+	BigNumber pow(BigNumber x, BigNumber y, BigNumber p);
 	
 };
 
@@ -1330,5 +1331,68 @@ inline vector<BigNumber> BigNumber::get_generator(factorization& prime_factoriza
 
 /* #9 */
 
+/*
+* #9
+* @brief carmichael function == number
+*/
+BigNumber BigNumber::pow(BigNumber x, BigNumber y, BigNumber p) {
+	BigNumber two("1", N);
+	BigNumber ret("1", N);
+	BigNumber zero("0", N);
+	x = x % p;
+	while (y > zero) {
+		if ((y % two) != zero) {
+			ret = (ret * x) % p;
+		}
+		y = y / two;
+		x = (x * x) % p;
+	}
+	return ret;
+}
 
+/*
+* #9
+* @brief euler function
+*/
+BigNumber BigNumber::euler(BigNumber n) {
+  BigNumber ret ("1",N);
+  BigNumber one ("1",N);
+  for (BigNumber i("2", N); n>i; i=i+one) {
+    if (gcd(i, n) == one) {
+      ret=ret+one;
+    }
+  }
+  return ret;
+}
+
+/*
+* #9
+* @brief carmichael function
+*/
+BigNumber BigNumber::carmichael(BigNumber n) {
+	BigNumber ret("1", N);
+	BigNumber one("1", N);
+
+  vector<BigNumber> coprimes;
+
+  for (BigNumber i("2", N); n > i; i = i + one) {
+	  if (gcd(i, n) == one) {
+		  coprimes.push_back(i);
+	  }
+  }
+
+  bool br = false;
+  while (!br) {
+    br = true;
+    for (int i = 0; i < coprimes.size(); i++) {
+      if (pow(coprimes[i], ret, n) != one) {
+        br = false;
+		ret = ret + one;
+        break;
+      }
+    }
+  }
+
+  return ret;
+}
 
