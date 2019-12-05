@@ -189,7 +189,7 @@ public:
 	 * @param take 2 numbers a, b
 	 * @return vector {d, x, y} such that ax + by = d, where d = GCD(a, b)
 	 */ 
-	 vector<BigNumber> Euclidean_algorithm(BigNumber a, BigNumber b);
+	 vector<BigNumber> Euclidean_algorithm(BigNumber& a, BigNumber& b) const;
 
 	 /**
 	 * #4
@@ -762,34 +762,88 @@ BigNumber BigNumber::operator % (const BigNumber & num) const
 
 /* #2 */
 
+
+
 /**
  * #2
  * @brief operator ^
  */
 BigNumber BigNumber::operator ^ (const BigNumber& pow) const {
-	//x^pow % N
-	BigNumber one("1");
-	if (pow == one)
-		return *this;
-	if (pow == BigNumber("0"))
-		return one;
+	//std::string;
+	BigNumber r("0");
+	r.chunks.resize(N.size());// = this->chunks.size();
+	r.chunks.push_back('1');
 
-	BigNumber res = *this;
-	BigNumber two("2");
+	BigNumber a("20"), b("35");
+	a.setN(pow.N);
+	b.setN(pow.N);
+	//BigNumber n1("0"), rr("0");
+	BigNumber n = N;
+	//r*rr + n*n1 = 1
+	std::vector<BigNumber> temp = Euclidean_algorithm(n, r);
+	//int k = (r * (rr % n) - 1) / n;
+	BigNumber rr = temp[0], n1 = temp[1];
+	//BigNumber a1 = a * r;
+	//BigNumber b1 = b * r;
 
-	BigNumber i("1");
+	BigNumber a1("0");
+	a1.chunks.reserve(N.size() - 1 + a.chunks.size());
+	for (size_t i = 0, size = N.size() - 1; i < size; ++i)
+		a1.chunks.push_back('0');
+	for (size_t i = 0, size = a.chunks.size(); i < size; ++i)
+		a1.chunks.push_back(a.chunks[i]);
+	
+	BigNumber b1("0");
+	b1.chunks.reserve(N.size() - 1 + b.chunks.size());
+	for (size_t i = 0, size = N.size() - 1; i < size; ++i)
+		b1.chunks.push_back('0');
+	for (size_t i = 0, size = b.chunks.size(); i < size; ++i)
+		b1.chunks.push_back(b.chunks[i]);
 
-	for (; pow > i*two;) {
-		res = res * res;
-		i = i * two;
+	a1.setN("0");
+	b1.setN("0");
+
+	BigNumber x = a1 * b1;
+	n1.setN("0");
+	BigNumber s = x * n1;
+	if (N.size() < s.chunks.size()){
+		s.chunks.erase(s.chunks.begin() + N.size(), s.chunks.end());
 	}
+	BigNumber t = x + s * n;
+	BigNumber u = t;
+	u.chunks.erase(u.chunks.begin(),u.chunks.begin() + N.size());
+		
+	BigNumber c1 = (n > u) ? u : u - n;
+	c1.setN(N);
+	rr.setN(N);
+	BigNumber c = c1 * rr;
+	std::cout << c;
+//	std::cout << c;
+	return r;
 
-	while (i != pow) {
-		res = res * *this;
-		i = i + one;
-	}
+	////x^pow % N
+	//BigNumber one("1");
+	//if (pow == one)
+	//	return *this;
+	//if (pow == BigNumber("0"))
+	//	return one;
 
-	return res;
+	//BigNumber res = *this;
+	//BigNumber two("2");
+
+	//BigNumber i("1");
+
+	//for (; pow > i*two;) {
+	//	res = res * res;
+	//	i = i * two;
+	//}
+
+	//while (i != pow) {
+	//	res = res * *this;
+	//	i = i + one;
+	//}
+
+	//return res;
 }
 
 /* #3 */
@@ -1013,7 +1067,7 @@ factorization BigNumber::factorize_pollard() {
 * @param take 2 numbers a, b
 * @return vector {d, x, y} such that ax + by = d, where d = GCD(a, b)
 */
-vector<BigNumber> BigNumber::Euclidean_algorithm(BigNumber a, BigNumber b)
+vector<BigNumber> BigNumber::Euclidean_algorithm(BigNumber& a, BigNumber& b) const
 {
 	vector<BigNumber> answer;
 	answer.push_back(BigNumber("0"));
