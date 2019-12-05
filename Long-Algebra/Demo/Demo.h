@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../BigNumber/BigNumber.h"
-#include "../EllipticCurves/ElipticCurve.h"
+//#include "../EllipticCurves/ElipticCurve.h"
 
 using std::cout;
 using std::cin;
