@@ -215,7 +215,7 @@ public:
 	 * @return order of a multiplicative group element
 	 * return 0 otherwise
 	 */
-	BigNumber elementOrder(BigNumber A, BigNumber S);
+	BigNumber elementOrder(BigNumber a, BigNumber Modl);
 
 	/* #8 */
 
@@ -1286,25 +1286,25 @@ BigNumber BigNumber::log_pollard(const BigNumber& alpha, const BigNumber& beta)
 * return 0 otherwise
 */
 
-BigNumber BigNumber::elementOrder(BigNumber A, BigNumber S)
+BigNumber elementOrder(BigNumber a, BigNumber Modl)
 {
-	BigNumber one("1", A.getN());
-	BigNumber zero("0", A.getN());
+	BigNumber one("1");
+	BigNumber zero("0");
 
-	if (gcd(A, S) != one)
+	if (gcd(a, Modl) != one)
 		return zero;
 
-	BigNumber result("1", A.getN());
+	BigNumber result("1");
 
-	BigNumber K("1", A.getN());
-	while (S > K)
+	BigNumber K("1");
+	while (Modl > K)
 	{
-		result = (result * A) % S;
+		result = (result * a) % Modl;
 
 		if (result == K)
 			return K;
 
-		K + one;
+		K = K + one;
 	}
 
 	return zero;
