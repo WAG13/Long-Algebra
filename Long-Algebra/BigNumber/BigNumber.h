@@ -140,6 +140,8 @@ public:
 	BigNumber operator * (const BigNumber &num) const;
 	BigNumber operator / (const BigNumber & num) const;
 	BigNumber inverse() const;
+	void decrease(const BigNumber& a, BigNumber& b, const BigNumber& a_count_in_a, BigNumber& a_count_in_b) const;
+	BigNumber simple_division(const BigNumber& b) const;
 
 	/* #2 */
 	BigNumber operator ^ (const BigNumber& num) const;
@@ -170,9 +172,6 @@ public:
 	 * @return the factorization structure that contains the factual prime factorization
 	 */
 	factorization factorize_pollard();
-
-	BigNumber log_pollard(const BigNumber& alpha, const BigNumber& beta);
-
 
 	/* #4 */
 
@@ -205,9 +204,23 @@ public:
 
 	/* #6 */
 
+	/**
+	 * #6
+	 * @brief !!!!!!!!!!!!!!!!
+	 */
+	void set(BigNumber &x, BigNumber &a, BigNumber &b);
+
+	/**
+	 * #6
+	 * @brief !!!!!!!!!!!!!!!!
+	 */
+	BigNumber log_pollard(const BigNumber& alpha, const BigNumber& beta);
 
 	/* #7 */
+	
 
+
+	/* #8 */
 
 	/*
 	* #8 
@@ -223,22 +236,6 @@ public:
 	/* #10 */
 
 
-	/**
-	 * #
-	 * !!!!!!!!!!!!!!!!
-	 */
-	void set(BigNumber &x, BigNumber &a, BigNumber &b);
-
-	/**
-	 * #
-	 * !!!!!!!!!!!!!!!!
-	 */
-	void decrease(const BigNumber& a, BigNumber& b, const BigNumber& a_count_in_a, BigNumber& a_count_in_b) const;
-	/**
-	 * #
-	 * !!!!!!!!!!!!!!!!
-	 */
-	BigNumber simple_division(const BigNumber& b) const;
 };
 
 /**
@@ -1182,41 +1179,8 @@ vector<BigNumber> BigNumber::sqrt()
 
 /* #6 */
 
-
-/* #7 */
-
-
-/*
-* #8
-* @brief Finding all generator of a cyclic group
-* @author Makarenko Natalia
-*/
-inline vector<BigNumber> BigNumber::get_generator(factorization& prime_factorization)
-{
-	vector<BigNumber> res;
-	BigNumber one("1", this->to_string());
-	BigNumber i("0", this->operator+(one).to_string());
-	bool flag = true;
-	for (; !i.operator>(*this) && i.operator!=(*this); i = i.operator+(one))
-	{
-		for (size_t j = 0; j < prime_factorization.base.size(); j++)
-			if (i.operator^(this->operator/(prime_factorization.base[j])).operator%(*this).operator==(one))flag = false;
-		if (flag)res.push_back(i);
-		flag = true;
-	}
-	return res;
-}
-
-/* #9 */
-
-
-/* #10 */
-
-
-
-
 /**
- * #
+ * #6
  * @brief !!!!!!!!!!!!!!
  */
 void BigNumber::set(BigNumber &x, BigNumber &a, BigNumber &b)
@@ -1253,7 +1217,7 @@ void BigNumber::set(BigNumber &x, BigNumber &a, BigNumber &b)
 }
 
 /**
- * #
+ * #6
  * @brief !!!!!!!!!!!!!!
  */
 BigNumber BigNumber::log_pollard(const BigNumber& alpha, const BigNumber& beta)
@@ -1285,3 +1249,37 @@ BigNumber BigNumber::log_pollard(const BigNumber& alpha, const BigNumber& beta)
 	res = res * invers_r;
 	return res;
 }
+
+/* #7 */
+
+
+/*
+* #8
+* @brief Finding all generator of a cyclic group
+* @author Makarenko Natalia
+*/
+inline vector<BigNumber> BigNumber::get_generator(factorization& prime_factorization)
+{
+	vector<BigNumber> res;
+	BigNumber one("1", this->to_string());
+	BigNumber i("0", this->operator+(one).to_string());
+	bool flag = true;
+	for (; !i.operator>(*this) && i.operator!=(*this); i = i.operator+(one))
+	{
+		for (size_t j = 0; j < prime_factorization.base.size(); j++)
+			if (i.operator^(this->operator/(prime_factorization.base[j])).operator%(*this).operator==(one))flag = false;
+		if (flag)res.push_back(i);
+		flag = true;
+	}
+	return res;
+}
+
+/* #9 */
+
+
+/* #10 */
+
+
+
+
+
