@@ -681,6 +681,7 @@ BigNumber BigNumber::operator - (const BigNumber& num) const {
 BigNumber BigNumber::operator * (const BigNumber& num) const {
 
 	BigNumber res("0", N);
+	res.sign = this->sign * num.sign;
 	vector<int> res_chunks;
 	res_chunks.resize(this->chunks.size() + num.chunks.size() + 1);
 	for (int i = 0; i < this->chunks.size(); i++) {
@@ -795,8 +796,8 @@ BigNumber BigNumber::montgomery_mult(const BigNumber& a, const BigNumber& b, con
 
 BigNumber BigNumber::euclid_alg(const BigNumber& a, const BigNumber& b, BigNumber* x, BigNumber* y)const {
 	// Base Case
-	BigNumber one("1", N);
-	BigNumber zero("0", N);
+	BigNumber one("1");
+	BigNumber zero("0");
 	if (a == zero)
 	{
 		*x = zero;
@@ -804,7 +805,7 @@ BigNumber BigNumber::euclid_alg(const BigNumber& a, const BigNumber& b, BigNumbe
 		return b;
 	}
 
-	BigNumber x1("0", N), y1("0", N); // To store results of recursive call  
+	BigNumber x1("0"), y1("0"); // To store results of recursive call  
 	BigNumber gcd = euclid_alg(b % a, a, &x1, &y1);
 
 	// Update x and y using results of  
@@ -824,7 +825,7 @@ BigNumber BigNumber::operator ^ (const BigNumber& pow) const {
 	char check;
 	if (N.size() && ((check = N[N.size() - 1]) == '1' || check == '3' || check == '7' || check == '9')) {
 		//std::string;
-		BigNumber r("0", N);
+		BigNumber r("0");
 		r.chunks.resize(N.size());// = this->chunks.size();
 		r.chunks.push_back(1);
 
@@ -833,12 +834,14 @@ BigNumber BigNumber::operator ^ (const BigNumber& pow) const {
 
 		//BigNumber n1("0"), rr("0");
 		BigNumber n = N;
+		n.setN("0");
 		//r*rr + n*n1 = 1
 		//std::vector<BigNumber> temp = Euclidean_algorithm(n, r);
 		//int k = (r * (rr % n) - 1) / n;
-		BigNumber rr("0", N), n1("0", N);
+		BigNumber rr("0"), n1("0");
 		euclid_alg(n, r, &n1, &rr);
-		n1 = (-n1 + N);
+		n1 = -n1;
+		//n1 = (-n1 + N);
 		//if (BigNumber("0") > rr)
 		//	rr = rr + BigNumber(N);
 		//
