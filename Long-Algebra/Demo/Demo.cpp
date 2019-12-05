@@ -13,7 +13,7 @@ void Demo::start() {
 	cout << "0 - set N" << endl;
 	cout << "1 - Test 1 task ( +, -, *, /, ^(-1) )" << endl;
 	cout << "2 - Test 2 task ( ^ )" << endl;
-	cout << "3 - Test 3 task ( ... )" << endl;
+	cout << "3 - Test 3 task ( factorization )" << endl;
 	cout << "4 - Test 4 task ( sqrt() )" << endl;
 	cout << "5 - Test 5 task ( ... )" << endl;
 	cout << "6 - Test 6 task ( ... )" << endl;
@@ -144,6 +144,108 @@ void Demo::test1() {
 		break;
 	}
 	return;
+}
+
+/**
+ * This function tests the factorization algorithms. Naive and Pollard Rho algorithms.
+ *
+ * @author Vitaliy Datsiuk
+ */
+void Demo::test3() {
+
+    BigNumber p1("97","997");
+    BigNumber p2("995","997");
+    BigNumber p3("901","997");
+    BigNumber p4("201","997");
+    BigNumber p5("247","997");
+    BigNumber p6("13","997");
+    BigNumber p7("1","997");
+    BigNumber p8("601","997");
+    BigNumber p9("599","997");
+    BigNumber p10("597","997");
+    BigNumber p11("3","997");
+    BigNumber p12("489","997");
+    BigNumber p13("5","997");
+    BigNumber p14("95","997");
+    BigNumber p15("167","997");
+    BigNumber p16("705","997");
+    BigNumber p17("671","997");
+    BigNumber p18("421","997");
+    BigNumber p19("423","997");
+    BigNumber p20("11","997");
+    BigNumber p21("77","997");
+    BigNumber p22("727","997");
+
+
+
+
+
+    factorization a = p1.factorize_pollard();
+    a.print();
+    cout << endl;
+    a = p2.factorize_pollard();
+    a.print();
+    cout << endl;
+    a = p3.factorize_pollard();
+    a.print();
+    cout << endl;
+    a = p4.factorize_pollard();
+    a.print();
+    cout << endl;
+    a = p5.factorize_pollard();
+    a.print();
+    cout << endl;
+    a = p6.factorize_pollard();
+    a.print();
+    cout << endl;
+    a = p7.factorize_pollard();
+    a.print();
+    cout << endl;
+    a = p8.factorize_pollard();
+    a.print();
+    cout << endl;
+    a = p9.factorize_pollard();
+    a.print();
+    cout << endl;
+    a = p10.factorize_pollard();
+    a.print();
+    cout << endl;
+    a = p11.factorize_pollard();
+    a.print();
+    cout << endl;
+    a = p12.factorize_pollard();
+    a.print();
+    cout << endl;
+    a = p13.factorize_pollard();
+    a.print();
+    cout << endl;
+    a = p14.factorize_pollard();
+    a.print();
+    cout << endl;
+    a = p15.factorize_pollard();
+    a.print();
+    cout << endl;
+    a = p16.factorize_pollard();
+    a.print();
+    cout << endl;
+    a = p17.factorize_pollard();
+    a.print();
+    cout << endl;
+    a = p18.factorize_pollard();
+    a.print();
+    cout << endl;
+    a = p19.factorize_naive();
+    a.print();
+    cout << endl;
+    a = p20.factorize_naive();
+    a.print();
+    cout << endl;
+    a = p21.factorize_naive();
+    a.print();
+    cout << endl;
+    a = p22.factorize_naive();
+    a.print();
+    cout << endl;
 }
 
 int Demo::random_int(int max) {

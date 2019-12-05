@@ -18,7 +18,13 @@ public:
 protected:
 	void test1();
 	void test2() {};
-	void test3() {};
+
+    /**
+     * This function tests the factorization algorithms. Naive and Pollard Rho algorithms.
+     *
+     * @author Vitaliy Datsiuk
+     */
+	void test3();
 	void test4() {};
 	void test5() {};
 	void test6() {};
