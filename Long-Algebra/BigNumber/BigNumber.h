@@ -231,7 +231,11 @@ public:
 	BigNumber euler(BigNumber n);
 	BigNumber carmichael(BigNumber n);
 	BigNumber pow(BigNumber x, BigNumber y, BigNumber p);
-	
+
+    
+    BigNumber gcd(const BigNumber& a, const BigNumber& b);
+    BigNumber lcm(const BigNumber& a, const BigNumber& b);
+    
 };
 
 /**
@@ -1396,3 +1400,16 @@ BigNumber BigNumber::carmichael(BigNumber n) {
   return ret;
 }
 
+BigNumber BigNumber::gcd(const BigNumber& a, const BigNumber& b)
+{
+    if (b == BigNumber("0"))
+        return a;
+    return gcd(b, a % b);
+      
+}
+ BigNumber BigNumber::lcm(const BigNumber& a, const BigNumber& b)
+{
+    BigNumber c = (a*b);
+    BigNumber d = gcd(a, b);
+    return c/d;
+}
