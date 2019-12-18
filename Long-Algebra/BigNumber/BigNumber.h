@@ -771,13 +771,13 @@ BigNumber BigNumber::montgomery_mult(const BigNumber& a, const BigNumber& b, con
 	BigNumber x = a * b;
 	BigNumber s = x * n1;
 
-	if (N.size() < s.chunks.size()) {
+	if (s.chunks.size() && N.size() < s.chunks.size()) {
 		s.chunks.erase(s.chunks.begin() + N.size(), s.chunks.end());
 	}
 
 	if (s.chunks.size() > 0) {
-		size_t it = s.chunks.size() - 1;
-		while (s.chunks[it--] == 0) {
+		int it = s.chunks.size() - 1;
+		while (it>=0 && s.chunks[it--] == 0) {
 			s.chunks.erase(s.chunks.end() - 1);
 		}
 		if (s.chunks.size() == 0)
@@ -787,7 +787,8 @@ BigNumber BigNumber::montgomery_mult(const BigNumber& a, const BigNumber& b, con
 
 	BigNumber t = x + s * N;
 	BigNumber u = t;
-	u.chunks.erase(u.chunks.begin(), u.chunks.begin() + N.size());
+	if (u.chunks.size())
+		u.chunks.erase(u.chunks.begin(), u.chunks.begin() + N.size());
 
 	BigNumber c1 = (BigNumber(N) > u) ? u : u - BigNumber(N);
 	//c1.setN(N);
@@ -835,23 +836,11 @@ BigNumber BigNumber::operator ^ (const BigNumber& pow) const {
 		//BigNumber n1("0"), rr("0");
 		BigNumber n = N;
 		n.setN("0");
+
 		//r*rr + n*n1 = 1
-		//std::vector<BigNumber> temp = Euclidean_algorithm(n, r);
-		//int k = (r * (rr % n) - 1) / n;
 		BigNumber rr("0"), n1("0");
 		euclid_alg(n, r, &n1, &rr);
 		n1 = -n1;
-		//n1 = (-n1 + N);
-		//if (BigNumber("0") > rr)
-		//	rr = rr + BigNumber(N);
-		//
-		//if (BigNumber("0") > n1)
-		//	n1 = n1 + BigNumber(N);
-
-		//rr.setN(rr.getN());
-		//n1.setN(n1.getN());
-		//BigNumber a1 = a * r;
-		//BigNumber b1 = b * r;	
 
 		BigNumber a1("0", N);
 		a1.chunks.reserve(N.size() - 1 + a.chunks.size());
@@ -878,8 +867,7 @@ BigNumber BigNumber::operator ^ (const BigNumber& pow) const {
 		c1.setN(N);
 		rr.setN(N);
 		BigNumber c = c1 * rr;
-		//std::cout << c;
-		//	std::cout << c;
+
 		return c;
 	}
 	else {
